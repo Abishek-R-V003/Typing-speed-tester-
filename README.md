@@ -1,4 +1,3 @@
-# Typing-speed-tester-
 <!DOCTYPE html>
 <html lang="en">
 <head>
