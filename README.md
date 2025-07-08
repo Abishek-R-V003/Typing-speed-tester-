@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProType | Advanced Typing Platform</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    crossorigin="anonymous"
+  />
+  <style>
+    /* styles.css content */
+    :root {
+        --primary: #4361ee;
+        --primary-dark: #3a0ca3;
+        --secondary: #4cc9f0;
+        --accent: #f72585;
+        --dark: #1e1e2e;
+        --darker: #121212;
+        --light: #f8f9fa;
+        --gray: #6c757d;
+        --success: #4caf50;
+        --danger: #f44336;
+        --warning: #ff9800;
+        --shadow: 0 4px 20px rgba(0,0,0,0.2);
+        --transition: all 0.3s ease-in-out;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif; /* Changed to Inter for consistency */
+    }
+
+    body {
+        background-color: var(--darker);
+        color: var(--light);
+        line-height: 1.6;
+        transition: var(--transition);
+        min-height: 100vh;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+        flex-grow: 1;
+    }
+
+    /* Header */
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        position: sticky;
+        top: 0;
+        background: rgba(30, 30, 46, 0.95);
+        z-index: 100;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .logo {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-shadow: 0 0 5px rgba(255,255,255,0.3);
+    }
+
+    .logo i {
+        font-size: 1.8rem;
+        color: var(--primary);
+    }
+
+    nav ul {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+    }
+
+    nav a {
+        color: var(--light);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 10px 15px;
+        border-radius: 8px;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    nav a:hover, nav a.active {
+        background: rgba(67, 97, 238, 0.2);
+        color: var(--secondary);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.2);
+    }
+
+    nav a i {
+        font-size: 1.1rem;
+    }
+
+    /* Page Transitions */
+    .page {
+        display: none;
+        animation: fadeIn 0.6s ease-out;
+        padding: 20px 0;
+    }
+
+    .page.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Welcome Page */
+    .welcome-page {
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 40px 20px;
+    }
+
+    .welcome-content {
+        max-width: 900px;
+        width: 100%;
+    }
+
+    .welcome-banner {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        padding: 60px 40px;
+        border-radius: 25px;
+        margin: 30px 0;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .welcome-banner:before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+        transform: rotate(30deg);
+        animation: backgroundPulse 5s infinite alternate;
+    }
+
+    @keyframes backgroundPulse {
+        from { opacity: 0.8; }
+        to { opacity: 1; }
+    }
+
+    .welcome-banner h1 {
+        font-size: 4rem;
+        margin-bottom: 25px;
+        position: relative;
+        text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .welcome-banner p {
+        font-size: 1.6rem;
+        max-width: 750px;
+        margin: 0 auto;
+        position: relative;
+        line-height: 1.5;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        margin: 60px 0;
+    }
+
+    .feature-card {
+        background: rgba(30, 30, 46, 0.8);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 20px;
+        padding: 35px;
+        text-align: center;
+        transition: var(--transition);
+        backdrop-filter: blur(12px);
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card:before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(255,255,255,0) 50%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .feature-card:hover:before {
+        opacity: 1;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-15px);
+        border-color: var(--primary);
+        box-shadow: 0 20px 40px rgba(67, 97, 238, 0.3);
+    }
+
+    .feature-icon {
+        font-size: 3.5rem;
+        margin-bottom: 25px;
+        color: var(--secondary);
+        text-shadow: 0 0 10px rgba(76, 201, 240, 0.5);
+    }
+
+    .feature-card h3 {
+        font-size: 1.6rem;
+        margin-bottom: 15px;
+        color: var(--light);
+    }
+
+    .feature-card p {
+        font-size: 1.1rem;
+        color: var(--gray);
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 25px;
+        justify-content: center;
+        margin-top: 50px;
+        flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn {
+        padding: 15px 40px;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: var(--shadow);
+        flex-shrink: 0;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+    }
+
+    .btn-secondary {
+        background: transparent;
+        color: var(--secondary);
+        border: 2px solid var(--secondary);
+    }
+
+    .btn-accent {
+        background: linear-gradient(135deg, var(--accent), #e71a7d);
+        color: white;
+    }
+
+    .btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+
+    /* Typing Test Page */
+    .test-container {
+        background: rgba(30, 30, 46, 0.8);
+        border-radius: 25px;
+        padding: 35px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,0.15);
+        margin: 30px 0;
+    }
+
+    .test-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .time-options {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .time-btn {
+        padding: 12px 25px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 50px;
+        cursor: pointer;
+        transition: var(--transition);
+        color: var(--light);
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    .time-btn:hover, .time-btn.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+    }
+
+    .timer {
+        font-size: 1.8rem;
+        font-weight: 700;
+        background: rgba(76, 201, 240, 0.15);
+        padding: 12px 30px;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid rgba(76, 201, 240, 0.3);
+    }
+
+    .test-content {
+        margin: 30px 0;
+    }
+
+    #typing-text {
+        font-size: 1.7rem;
+        line-height: 1.9;
+        margin-bottom: 30px;
+        min-height: 220px;
+        padding: 30px;
+        background: rgba(0,0,0,0.3);
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,0.1);
+        color: var(--light);
+        position: relative;
+        overflow: hidden;
+        text-align: left;
+    }
+
+    .word {
+        display: inline-block;
+        margin: 0 8px 8px 0;
+        padding: 6px 12px;
+        border-radius: 10px;
+        transition: var(--transition);
+        white-space: pre-wrap;
+    }
+
+    .word.current {
+        background: rgba(67, 97, 238, 0.4);
+        color: white;
+        box-shadow: 0 0 20px rgba(67, 97, 238, 0.6);
+        transform: scale(1.02);
+    }
+
+    .char {
+        display: inline-block; /* Ensure characters are inline-block for proper cursor positioning */
+    }
+
+    .char.correct {
+        color: var(--success);
+    }
+
+    .char.incorrect {
+        color: var(--danger);
+        text-decoration: underline wavy var(--danger) 2px;
+    }
+
+    .cursor {
+        display: inline-block;
+        width: 3px;
+        height: 1.4em; /* Adjust height based on font size */
+        background: var(--secondary);
+        vertical-align: middle;
+        margin-left: 2px;
+        animation: blink 0.8s infinite step-end;
+        position: relative;
+        z-index: 1;
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+
+    #typing-input {
+        width: 100%;
+        padding: 22px;
+        font-size: 1.4rem;
+        background: rgba(0,0,0,0.4);
+        border: 2px solid rgba(255,255,255,0.15);
+        border-radius: 20px;
+        outline: none;
+        transition: var(--transition);
+        color: white;
+        caret-color: var(--secondary);
+    }
+
+    #typing-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.4);
+    }
+
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 25px;
+        margin-top: 35px;
+    }
+
+    .stat-box {
+        background: rgba(0,0,0,0.25);
+        border-radius: 20px;
+        padding: 25px;
+        text-align: center;
+        border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .stat-value {
+        font-size: 3rem;
+        font-weight: 700;
+        margin: 12px 0;
+    }
+
+    .wpm { color: var(--primary); }
+    .accuracy { color: var(--success); }
+    .errors { color: var(--danger); }
+    #time-remaining { color: var(--secondary); }
+
+    .controls {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        margin-top: 40px;
+        flex-wrap: wrap;
+    }
+
+    /* Videos Page */
+    .videos-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 30px;
+        margin: 40px 0;
+    }
+
+    .video-card {
+        background: rgba(30, 30, 46, 0.8);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        border: 1px solid rgba(255,255,255,0.15);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .video-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--secondary);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    }
+
+    .video-thumbnail {
+        position: relative;
+        padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        background-color: #000;
+    }
+
+    .video-thumbnail iframe {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        border: none;
+    }
+
+    .video-info {
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .video-info h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--light);
+    }
+
+    .video-info p {
+        color: var(--gray);
+        margin-bottom: 15px;
+        font-size: 0.95rem;
+        flex-grow: 1;
+    }
+
+    .video-meta {
+        display: flex;
+        justify-content: space-between;
+        color: var(--gray);
+        font-size: 0.85rem;
+        margin-top: 10px;
+    }
+
+    .video-actions {
+        margin-top: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .video-actions .btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+        border-radius: 8px;
+        min-width: unset;
+        width: fit-content;
+        box-shadow: none;
+    }
+
+    .video-actions .btn:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    /* Profile Page */
+    .profile-container {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 40px;
+        margin: 40px 0;
+    }
+
+    .profile-sidebar {
+        background: rgba(30, 30, 46, 0.8);
+        border-radius: 25px;
+        padding: 35px;
+        text-align: center;
+        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: var(--shadow);
+    }
+
+    .profile-pic {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        margin: 0 auto 25px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+        color: white;
+        border: 5px solid rgba(255,255,255,0.2);
+        box-shadow: 0 0 0 5px var(--primary-dark);
+    }
+
+    .profile-name {
+        font-size: 2.2rem;
+        margin-bottom: 12px;
+        color: var(--secondary);
+    }
+
+    .profile-email {
+        color: var(--gray);
+        margin-bottom: 25px;
+        font-size: 1rem;
+    }
+
+    .profile-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin: 30px 0;
+    }
+
+    .profile-stat {
+        background: rgba(0,0,0,0.2);
+        padding: 20px;
+        border-radius: 15px;
+        border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .profile-stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--accent);
+        margin-bottom: 5px;
+    }
+
+    .profile-stat-label {
+        font-size: 1rem;
+        color: var(--gray);
+    }
+
+    .profile-content {
+        background: rgba(30, 30, 46, 0.8);
+        border-radius: 25px;
+        padding: 35px;
+        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: var(--shadow);
+    }
+
+    .profile-section {
+        margin-bottom: 40px;
+    }
+
+    .profile-section h2 {
+        font-size: 2rem;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid var(--primary);
+        color: var(--light);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .history-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+    }
+
+    .history-card {
+        background: rgba(0,0,0,0.25);
+        border-radius: 20px;
+        padding: 25px;
+        border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .history-card h3 {
+        margin-bottom: 12px;
+        color: var(--secondary);
+        font-size: 1.3rem;
+    }
+
+    .history-card p {
+        color: var(--gray);
+        margin-bottom: 15px;
+        font-size: 0.95rem;
+    }
+
+    .history-stats {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        color: var(--light);
+    }
+
+    /* Contact Page */
+    .contact-container {
+        background: rgba(30, 30, 46, 0.8);
+        border-radius: 25px;
+        padding: 35px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,0.15);
+        margin: 30px auto;
+        max-width: 700px;
+        text-align: center;
+    }
+
+    .contact-container h2 {
+        font-size: 2.5rem;
+        margin-bottom: 25px;
+        color: var(--primary);
+    }
+
+    .contact-info p {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+        color: var(--light);
+    }
+
+    .contact-info a {
+        color: var(--secondary);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .contact-info a:hover {
+        text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+        text-align: center;
+        padding: 30px 0;
+        margin-top: 50px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        margin: 25px 0;
+    }
+
+    .social-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        color: var(--light);
+        font-size: 1.8rem;
+        transition: var(--transition);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .social-links a:hover {
+        background: var(--primary);
+        transform: translateY(-8px) rotate(10deg);
+        box-shadow: 0 10px 20px rgba(67, 97, 238, 0.4);
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+        .container {
+            padding: 15px;
+        }
+    }
+
+    @media (max-width: 900px) {
+        .profile-container {
+            grid-template-columns: 1fr;
+        }
+        .welcome-banner h1 {
+            font-size: 3rem;
+        }
+        .welcome-banner p {
+            font-size: 1.3rem;
+        }
+        .feature-card {
+            padding: 30px;
+        }
+        .feature-icon {
+            font-size: 3rem;
+        }
+        .feature-card h3 {
+            font-size: 1.4rem;
+        }
+        .videos-container {
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+        nav ul {
+            gap: 15px;
+        }
+        nav a {
+            padding: 8px 12px;
+            font-size: 0.95rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        header {
+            flex-direction: column;
+            gap: 15px;
+        }
+        nav ul {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        nav a span {
+            display: none;
+        }
+        nav a {
+            padding: 10px;
+            min-width: 45px;
+            justify-content: center;
+        }
+        .welcome-banner {
+            padding: 40px 20px;
+        }
+        .welcome-banner h1 {
+            font-size: 2.5rem;
+        }
+        .welcome-banner p {
+            font-size: 1.1rem;
+        }
+        .cta-buttons {
+            flex-direction: column;
+            gap: 15px;
+        }
+        .test-header {
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .time-options {
+            width: 100%;
+            justify-content: center;
+        }
+        .stats-container {
+            grid-template-columns: 1fr;
+        }
+        .profile-container {
+            grid-template-columns: 1fr;
+        }
+        .history-grid {
+            grid-template-columns: 1fr;
+        }
+        .video-card {
+            flex-direction: column;
+        }
+        .video-thumbnail {
+            width: 100%;
+            height: auto;
+        }
+        .video-info {
+            padding: 15px;
+        }
+        .add-video-section {
+            padding: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .logo span {
+            display: none;
+        }
+        .logo {
+            font-size: 1.5rem;
+        }
+        .welcome-banner h1 {
+            font-size: 2rem;
+        }
+        .welcome-banner p {
+            font-size: 1rem;
+        }
+        .feature-card {
+            padding: 25px;
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+        }
+        .feature-card h3 {
+            font-size: 1.2rem;
+        }
+        .btn {
+            padding: 12px 25px;
+            font-size: 1rem;
+        }
+        #typing-text {
+            font-size: 1.3rem;
+            padding: 20px;
+            min-height: 180px;
+        }
+        #typing-input {
+            padding: 18px;
+            font-size: 1.2rem;
+        }
+        .stat-value {
+            font-size: 2.2rem;
+        }
+        .profile-name {
+            font-size: 1.8rem; /* Completed CSS */
+        }
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            font-size: 3rem;
+        }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="#" class="logo" data-page="welcome">
+        <i class="fas fa-keyboard"></i>
+        <span>ProType</span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="#" data-page="welcome" class="active"><i class="fas fa-home"></i> <span>Home</span></a></li>
+          <li><a href="#" data-page="test"><i class="fas fa-edit"></i> <span>Test</span></a></li>
+          <li><a href="#" data-page="videos"><i class="fas fa-video"></i> <span>Videos</span></a></li>
+          <li><a href="#" data-page="profile"><i class="fas fa-user"></i> <span>Profile</span></a></li>
+          <li><a href="#" data-page="contact"><i class="fas fa-envelope"></i> <span>Contact</span></a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Welcome Page -->
+      <section id="welcome-page" class="page active">
+        <div class="welcome-page">
+          <div class="welcome-content">
+            <div class="welcome-banner">
+              <h1>Master Your Typing Skills</h1>
+              <p>ProType offers an advanced platform to improve your typing speed and accuracy with engaging tests and insightful analytics.</p>
+            </div>
+
+            <div class="cta-buttons">
+              <button class="btn btn-primary" data-page="test">
+                <i class="fas fa-play"></i> Start Typing Test
+              </button>
+              <button class="btn btn-secondary" data-page="videos">
+                <i class="fas fa-graduation-cap"></i> Learn More
+              </button>
+            </div>
+
+            <div class="features-grid">
+              <div class="feature-card">
+                <i class="feature-icon fas fa-tachometer-alt"></i>
+                <h3>Real-time Performance</h3>
+                <p>Track your WPM, accuracy, and errors instantly as you type.</p>
+              </div>
+              <div class="feature-card">
+                <i class="feature-icon fas fa-chart-line"></i>
+                <h3>Detailed Statistics</h3>
+                <p>Analyze your progress with comprehensive graphs and historical data.</p>
+              </div>
+              <div class="feature-card">
+                <i class="feature-icon fas fa-book"></i>
+                <h3>Diverse Content</h3>
+                <p>Practice with a wide range of texts, from common words to challenging paragraphs.</p>
+              </div>
+              <div class="feature-card">
+                <i class="feature-icon fas fa-video"></i>
+                <h3>Educational Videos</h3>
+                <p>Access curated videos to learn proper typing techniques and ergonomic tips.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Typing Test Page -->
+      <section id="test-page" class="page">
+        <div class="test-container">
+          <h2 style="font-size: 2.5rem; margin-bottom: 25px; color: var(--secondary); text-align: center;">Typing Test</h2>
+          <div class="test-header">
+            <div class="time-options">
+              <button class="time-btn active" data-time="15">15s</button>
+              <button class="time-btn" data-time="30">30s</button>
+              <button class="time-btn" data-time="60">60s</button>
+            </div>
+            <div class="timer">
+              <i class="fas fa-clock"></i>
+              <span id="time-display">0:00</span>
+            </div>
+          </div>
+
+          <div class="test-content">
+            <div id="typing-text">
+              <!-- Typing text will be loaded here by JavaScript -->
+            </div>
+            <input type="text" id="typing-input" placeholder="Start typing here..." autofocus disabled />
+          </div>
+
+          <div class="stats-container">
+            <div class="stat-box">
+              <div class="stat-label">WPM</div>
+              <div class="stat-value wpm" id="wpm-display">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Accuracy</div>
+              <div class="stat-value accuracy" id="accuracy-display">0%</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Errors</div>
+              <div class="stat-value errors" id="errors-display">0</div>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button class="btn btn-primary" id="restart-btn">
+              <i class="fas fa-redo"></i> Restart Test
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Videos Page -->
+      <section id="videos-page" class="page">
+        <div class="test-container"> <!-- Reusing test-container for styling -->
+          <h2 style="font-size: 2.5rem; margin-bottom: 25px; color: var(--secondary); text-align: center;">Educational Videos</h2>
+          <p style="text-align: center; margin-bottom: 40px; color: var(--gray);">Learn the best typing techniques and improve your ergonomics with our curated video collection.</p>
+          <div class="videos-container" id="videos-list">
+            <!-- Video cards will be loaded here by JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Profile Page -->
+      <section id="profile-page" class="page">
+        <div class="profile-container">
+          <div class="profile-sidebar">
+            <div class="profile-pic">
+              <i class="fas fa-user-circle"></i>
+            </div>
+            <h2 class="profile-name" id="profile-user-name">Guest User</h2>
+            <p class="profile-email" id="profile-user-email">guest@protype.com</p>
+            <button class="btn btn-primary">Edit Profile</button>
+
+            <div class="profile-stats">
+              <div class="profile-stat">
+                <div class="profile-stat-value" id="profile-avg-wpm">0</div>
+                <div class="profile-stat-label">Avg. WPM</div>
+              </div>
+              <div class="profile-stat">
+                <div class="profile-stat-value" id="profile-avg-accuracy">0%</div>
+                <div class="profile-stat-label">Avg. Accuracy</div>
+              </div>
+              <div class="profile-stat">
+                <div class="profile-stat-value" id="profile-tests-completed">0</div>
+                <div class="profile-stat-label">Tests Completed</div>
+              </div>
+              <div class="profile-stat">
+                <div class="profile-stat-value" id="profile-total-errors">0</div>
+                <div class="profile-stat-label">Total Errors</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-content">
+            <div class="profile-section">
+              <h2><i class="fas fa-history"></i> Typing History</h2>
+              <div class="history-grid" id="typing-history-list">
+                <!-- Typing history cards will be loaded here by JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Page -->
+      <section id="contact-page" class="page">
+        <div class="contact-container">
+          <h2><i class="fas fa-headset"></i> Contact Us</h2>
+          <p class="contact-info">
+            Have questions, feedback, or suggestions? We'd love to hear from you!
+          </p>
+          <p class="contact-info">
+            <strong>Email:</strong> <a href="mailto:support@protype.com">support@protype.com</a>
+          </p>
+          <p class="contact-info">
+            <strong>Phone:</strong> +1 (123) 456-7890
+          </p>
+          <p class="contact-info">
+            <strong>Address:</strong> 123 Typing Lane, Speed City, TY 98765
+          </p>
+          <p class="contact-info" style="margin-top: 30px;">
+            Follow us on social media for updates and tips!
+          </p>
+          <div class="social-links">
+            <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2023 ProType. All rights reserved.</p>
+      <div class="social-links">
+        <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- Page Navigation Logic ---
+      const navLinks = document.querySelectorAll('nav a');
+      const pages = document.querySelectorAll('.page');
+
+      function showPage(pageId) {
+        pages.forEach(page => {
+          page.classList.remove('active');
+        });
+        document.getElementById(pageId).classList.add('active');
+
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.dataset.page === pageId.replace('-page', '')) {
+            link.classList.add('active');
+          }
+        });
+
+        // If navigating to test page, initialize the test
+        if (pageId === 'test-page') {
+          initTest();
+        }
+      }
+
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const pageId = `${e.currentTarget.dataset.page}-page`;
+          showPage(pageId);
+        });
+      });
+
+      // Handle logo click to go to welcome page
+      document.querySelector('.logo').addEventListener('click', (e) => {
+        e.preventDefault();
+        showPage('welcome-page');
+      });
+
+      // Handle CTA buttons on welcome page
+      document.querySelectorAll('.cta-buttons .btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+          e.preventDefault();
+          const pageId = `${e.currentTarget.dataset.page}-page`;
+          showPage(pageId);
+        });
+      });
+
+      // --- Typing Test Logic ---
+      const typingTextDiv = document.getElementById('typing-text');
+      const typingInput = document.getElementById('typing-input');
+      const timeOptions = document.querySelectorAll('.time-btn');
+      const timeDisplay = document.getElementById('time-display');
+      const wpmDisplay = document.getElementById('wpm-display');
+      const accuracyDisplay = document.getElementById('accuracy-display');
+      const errorsDisplay = document.getElementById('errors-display');
+      const restartBtn = document.getElementById('restart-btn');
+
+      let currentText = '';
+      let words = [];
+      let currentWordIndex = 0;
+      let currentCharIndex = 0;
+      let correctChars = 0;
+      let incorrectChars = 0;
+      let totalCharsTyped = 0;
+      let timer = null;
+      let timeLeft = 0;
+      let testDuration = 60; // Default to 60 seconds
+      let isRunning = false;
+      let startTime = 0;
+
+      // Dummy texts for typing test
+      const texts = [
+        "The quick brown fox jumps over the lazy dog. This is a classic pangram often used for typing practice.",
+        "Practice makes perfect. Consistent effort in typing drills will significantly improve your speed and accuracy over time.",
+        "Technology has revolutionized the way we communicate, work, and learn. Embrace the digital age with strong typing skills.",
+        "The serene beauty of nature often inspires profound thoughts and peaceful reflections. Take a moment to appreciate it.",
+        "Programming is a powerful skill that allows you to create, innovate, and solve complex problems with logical solutions.",
+        "Artificial intelligence is rapidly advancing, bringing new possibilities and challenges across various industries.",
+        "The internet provides vast amounts of information, making knowledge more accessible than ever before.",
+        "Learning a new language can open up new cultural experiences and broaden your perspective on the world.",
+        "The future of work is constantly evolving, with remote work and digital collaboration becoming increasingly common.",
+        "Reading is a fundamental skill that enhances vocabulary, comprehension, and critical thinking abilities.",
+        "Creativity is the ability to generate new ideas and solutions, often by connecting seemingly unrelated concepts.",
+        "The pursuit of knowledge is a lifelong journey, constantly expanding our understanding of ourselves and the universe."
+      ];
+
+      function getRandomText() {
+        return texts[Math.floor(Math.random() * texts.length)];
+      }
+
+      function loadText() {
+        currentText = getRandomText();
+        typingTextDiv.innerHTML = ''; // Clear previous text
+        words = currentText.split(' ');
+
+        words.forEach((word, wordIdx) => {
+          const wordSpan = document.createElement('span');
+          wordSpan.classList.add('word');
+          word.split('').forEach(char => {
+            const charSpan = document.createElement('span');
+            charSpan.classList.add('char');
+            charSpan.textContent = char;
+            wordSpan.appendChild(charSpan);
+          });
+          // Add a space after each word except the last one
+          if (wordIdx < words.length - 1) {
+            const spaceSpan = document.createElement('span');
+            spaceSpan.classList.add('char');
+            spaceSpan.textContent = ' ';
+            wordSpan.appendChild(spaceSpan);
+          }
+          typingTextDiv.appendChild(wordSpan);
+        });
+
+        // Highlight the first word
+        if (words.length > 0) {
+          typingTextDiv.children[0].classList.add('current');
+          // Add initial cursor
+          const firstChar = typingTextDiv.children[0].querySelector('.char');
+          if (firstChar) {
+            const cursor = document.createElement('span');
+            cursor.classList.add('cursor');
+            firstChar.parentNode.insertBefore(cursor, firstChar);
+          }
+        }
+      }
+
+      function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timeDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      }
+
+      function startTimer() {
+        if (isRunning) return;
+        isRunning = true;
+        startTime = Date.now();
+        typingInput.focus(); // Ensure input is focused when timer starts
+
+        timer = setInterval(() => {
+          timeLeft--;
+          updateTimerDisplay();
+          updateStats(); // Update stats every second
+          if (timeLeft <= 0) {
+            endTest();
+          }
+        }, 1000);
+      }
+
+      function endTest() {
+        clearInterval(timer);
+        isRunning = false;
+        typingInput.disabled = true;
+        typingInput.value = ''; // Clear input on test end
+        // Remove cursor
+        const currentCursor = document.querySelector('.cursor');
+        if (currentCursor) {
+          currentCursor.remove();
+        }
+        updateStats(); // Final stats update
+        // Optionally, save results to profile or show a modal
+        saveTestResult();
+      }
+
+      function updateStats() {
+        const timeElapsed = (testDuration - timeLeft);
+        const wpm = timeElapsed > 0 ? Math.round((correctChars / 5) / (timeElapsed / 60)) : 0;
+        const accuracy = totalCharsTyped > 0 ? Math.round((correctChars / totalCharsTyped) * 100) : 0;
+
+        wpmDisplay.textContent = wpm;
+        accuracyDisplay.textContent = `${accuracy}%`;
+        errorsDisplay.textContent = incorrectChars;
+      }
+
+      function initTest() {
+        clearInterval(timer);
+        isRunning = false;
+        currentWordIndex = 0;
+        currentCharIndex = 0;
+        correctChars = 0;
+        incorrectChars = 0;
+        totalCharsTyped = 0;
+        timeLeft = testDuration;
+
+        typingInput.value = '';
+        typingInput.disabled = false;
+        typingInput.focus();
+
+        updateTimerDisplay();
+        updateStats();
+        loadText();
+      }
+
+      function moveCursor() {
+        const currentCursor = document.querySelector('.cursor');
+        if (currentCursor) {
+          currentCursor.remove();
+        }
+
+        const currentWordElement = typingTextDiv.children[currentWordIndex];
+        if (!currentWordElement) return; // Test might have ended
+
+        const charsInWord = currentWordElement.querySelectorAll('.char');
+        let targetCharElement;
+
+        if (currentCharIndex < charsInWord.length) {
+          targetCharElement = charsInWord[currentCharIndex];
+        } else {
+          // If at the end of a word (after the space char), place cursor after the word
+          targetCharElement = currentWordElement.lastChild;
+        }
+
+        const newCursor = document.createElement('span');
+        newCursor.classList.add('cursor');
+
+        if (targetCharElement) {
+          targetCharElement.parentNode.insertBefore(newCursor, targetCharElement.nextSibling);
+        } else if (currentWordElement) {
+          // If no chars in word (empty word, shouldn't happen with current text), place at end
+          currentWordElement.appendChild(newCursor);
+        }
+      }
+
+      typingInput.addEventListener('input', (e) => {
+        if (!isRunning && timeLeft > 0) {
+          startTimer();
+        }
+        if (!isRunning) return; // Prevent input if test ended
+
+        const typedValue = typingInput.value;
+        const currentWordElement = typingTextDiv.children[currentWordIndex];
+        if (!currentWordElement) {
+            endTest(); // No more words, test finished
+            return;
+        }
+        const charSpans = currentWordElement.querySelectorAll('.char');
+        const currentWordText = Array.from(charSpans).map(span => span.textContent).join('');
+
+        // Handle backspace
+        if (e.inputType === 'deleteContentBackward') {
+          if (currentCharIndex > 0) {
+            currentCharIndex--;
+            totalCharsTyped--;
+            const charSpan = charSpans[currentCharIndex];
+            if (charSpan) {
+              charSpan.classList.remove('correct', 'incorrect');
+              if (charSpan.textContent !== currentText[totalCharsTyped]) {
+                // If the deleted char was an error, decrement incorrectChars
+                // This logic is tricky with overtyping, simpler to just re-evaluate
+                // For simplicity, we just remove the class.
+              }
+            }
+          } else if (currentWordIndex > 0) {
+            // Move back to previous word if at start of current word
+            currentWordElement.classList.remove('current');
+            currentWordIndex--;
+            const prevWordElement = typingTextDiv.children[currentWordIndex];
+            prevWordElement.classList.add('current');
+            const prevWordChars = prevWordElement.querySelectorAll('.char');
+            currentCharIndex = prevWordChars.length; // Move to end of previous word
+            totalCharsTyped--; // Decrement for the space character
+            prevWordChars[currentCharIndex -1].classList.remove('correct', 'incorrect'); // Remove class from the space
+          }
+        } else {
+            // Handle regular typing
+            const typedChar = e.data; // The actual character typed
+            const expectedChar = charSpans[currentCharIndex] ? charSpans[currentCharIndex].textContent : null;
+
+            if (typedChar === expectedChar) {
+                charSpans[currentCharIndex].classList.add('correct');
+                charSpans[currentCharIndex].classList.remove('incorrect');
+                correctChars++;
+            } else {
+                charSpans[currentCharIndex].classList.add('incorrect');
+                charSpans[currentCharIndex].classList.remove('correct');
+                incorrectChars++;
+            }
+            totalCharsTyped++;
+            currentCharIndex++;
+        }
+
+        moveCursor();
+        updateStats();
+
+        // Check if current word is completed
+        if (currentCharIndex >= charSpans.length) {
+            // If the last character typed was a space, move to next word
+            if (e.data === ' ' && currentWordIndex < words.length - 1) {
+                currentWordElement.classList.remove('current');
+                currentWordIndex++;
+                typingTextDiv.children[currentWordIndex].classList.add('current');
+                currentCharIndex = 0; // Reset char index for the new word
+                typingInput.value = ''; // Clear input for the next word
+                moveCursor();
+            } else if (currentWordIndex === words.length - 1 && currentCharIndex === charSpans.length) {
+                // Last word and last character typed
+                endTest();
+            }
+        }
+      });
+
+      // Handle spacebar to move to next word if current word is complete
+      typingInput.addEventListener('keydown', (e) => {
+        if (e.key === ' ') {
+          const currentWordElement = typingTextDiv.children[currentWordIndex];
+          if (currentWordElement) {
+            const charSpans = currentWordElement.querySelectorAll('.char');
+            // If the user has typed all characters of the current word (including its trailing space if it has one)
+            // and it's not the last word in the text.
+            const hasTrailingSpace = currentWordElement.lastChild && currentWordElement.lastChild.textContent === ' ';
+            const expectedWordLength = hasTrailingSpace ? words[currentWordIndex].length + 1 : words[currentWordIndex].length;
+
+            if (currentCharIndex === expectedWordLength && currentWordIndex < words.length - 1) {
+              e.preventDefault(); // Prevent adding an extra space in the input field
+              currentWordElement.classList.remove('current');
+              currentWordIndex++;
+              typingTextDiv.children[currentWordIndex].classList.add('current');
+              currentCharIndex = 0;
+              typingInput.value = ''; // Clear input for the next word
+              moveCursor();
+            }
+          }
+        }
+      });
+
+
+      timeOptions.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          timeOptions.forEach(b => b.classList.remove('active'));
+          e.currentTarget.classList.add('active');
+          testDuration = parseInt(e.currentTarget.dataset.time);
+          initTest();
+        });
+      });
+
+      restartBtn.addEventListener('click', initTest);
+
+      // --- Videos Page Logic ---
+      const videosList = document.getElementById('videos-list');
+      const videos = [
+        {
+          id: 'watch?v=N6J06Q9e0Kk',
+          title: 'How to Type Faster: 10 Tips for Improving Your Typing Speed',
+          description: 'Learn essential tips and techniques to significantly boost your typing speed and efficiency.',
+          source: 'YouTube',
+          duration: '8:30'
+        },
+        {
+          id: 'watch?v=F0S4Qf6k2iI',
+          title: 'Proper Typing Posture & Ergonomics Guide',
+          description: 'Discover the correct posture and ergonomic setup to prevent strain and type comfortably for longer periods.',
+          source: 'YouTube',
+          duration: '6:15'
+        },
+        {
+          id: 'watch?v=xZ_p0t6o0_o',
+          title: 'Touch Typing Tutorial for Beginners',
+          description: 'A comprehensive guide for beginners to learn touch typing from scratch, focusing on finger placement.',
+          source: 'YouTube',
+          duration: '12:00'
+        },
+        {
+          id: 'watch?v=e_wK50z126s',
+          title: 'Typing Games to Improve Speed and Accuracy',
+          description: 'Explore fun and effective typing games that can help you sharpen your skills while having a good time.',
+          source: 'YouTube',
+          duration: '7:40'
+        }
+      ];
+
+      function loadVideos() {
+        videosList.innerHTML = '';
+        videos.forEach(video => {
+          const videoCard = document.createElement('div');
+          videoCard.classList.add('video-card');
+          videoCard.innerHTML = `
+            <div class="video-thumbnail">
+              <iframe src="https://www.youtube.com/embed/${video.id.split('v=')[1]}"
+                      title="${video.title}" frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+              <h3><i class="fab fa-youtube"></i> ${video.title}</h3>
+              <p>${video.description}</p>
+              <div class="video-meta">
+                <span>Source: ${video.source}</span>
+                <span>Duration: ${video.duration}</span>
+              </div>
+              <div class="video-actions">
+                <a href="https://www.youtube.com/${video.id}" target="_blank" class="btn btn-primary">Watch Now <i class="fas fa-external-link-alt"></i></a>
+              </div>
+            </div>
+          `;
+          videosList.appendChild(videoCard);
+        });
+      }
+
+      // --- Profile Page Logic ---
+      const profileUserName = document.getElementById('profile-user-name');
+      const profileUserEmail = document.getElementById('profile-user-email');
+      const profileAvgWPM = document.getElementById('profile-avg-wpm');
+      const profileAvgAccuracy = document.getElementById('profile-avg-accuracy');
+      const profileTestsCompleted = document.getElementById('profile-tests-completed');
+      const profileTotalErrors = document.getElementById('profile-total-errors');
+      const typingHistoryList = document.getElementById('typing-history-list');
+
+      // Dummy profile data
+      let userProfile = {
+        name: 'Jane Doe',
+        email: 'jane.doe@example.com',
+        avgWPM: 75,
+        avgAccuracy: 98,
+        testsCompleted: 25,
+        totalErrors: 120,
+        history: [
+          { date: '2023-10-26', wpm: 72, accuracy: 97, errors: 5, duration: '60s' },
+          { date: '2023-10-25', wpm: 78, accuracy: 99, errors: 2, duration: '30s' },
+          { date: '2023-10-24', wpm: 68, accuracy: 96, errors: 8, duration: '60s' },
+          { date: '2023-10-23', wpm: 80, accuracy: 98, errors: 3, duration: '15s' },
+          { date: '2023-10-22', wpm: 70, accuracy: 95, errors: 10, duration: '60s' }
+        ]
+      };
+
+      function loadProfile() {
+        profileUserName.textContent = userProfile.name;
+        profileUserEmail.textContent = userProfile.email;
+        profileAvgWPM.textContent = userProfile.avgWPM;
+        profileAvgAccuracy.textContent = `${userProfile.avgAccuracy}%`;
+        profileTestsCompleted.textContent = userProfile.testsCompleted;
+        profileTotalErrors.textContent = userProfile.totalErrors;
+
+        typingHistoryList.innerHTML = '';
+        userProfile.history.forEach(test => {
+          const historyCard = document.createElement('div');
+          historyCard.classList.add('history-card');
+          historyCard.innerHTML = `
+            <h3>Test on ${test.date} (${test.duration})</h3>
+            <p>WPM: <span style="color: var(--primary); font-weight: 600;">${test.wpm}</span></p>
+            <p>Accuracy: <span style="color: var(--success); font-weight: 600;">${test.accuracy}%</span></p>
+            <p>Errors: <span style="color: var(--danger); font-weight: 600;">${test.errors}</span></p>
+          `;
+          typingHistoryList.appendChild(historyCard);
+        });
+      }
+
+      function saveTestResult() {
+        if (totalCharsTyped === 0) return; // Don't save if no typing occurred
+
+        const finalWPM = Math.round((correctChars / 5) / (testDuration / 60));
+        const finalAccuracy = totalCharsTyped > 0 ? Math.round((correctChars / totalCharsTyped) * 100) : 0;
+
+        const newResult = {
+          date: new Date().toISOString().slice(0, 10),
+          wpm: finalWPM,
+          accuracy: finalAccuracy,
+          errors: incorrectChars,
+          duration: `${testDuration}s`
+        };
+
+        // Add to history (limit to 5 for display)
+        userProfile.history.unshift(newResult);
+        if (userProfile.history.length > 5) {
+          userProfile.history.pop();
+        }
+
+        // Update overall stats (simple average for demonstration)
+        userProfile.testsCompleted++;
+        userProfile.totalErrors += incorrectChars;
+
+        let totalWPM = 0;
+        let totalAccuracy = 0;
+        userProfile.history.forEach(h => {
+            totalWPM += h.wpm;
+            totalAccuracy += h.accuracy;
+        });
+        userProfile.avgWPM = Math.round(totalWPM / userProfile.history.length);
+        userProfile.avgAccuracy = Math.round(totalAccuracy / userProfile.history.length);
+
+        // Re-render profile if on profile page
+        if (document.getElementById('profile-page').classList.contains('active')) {
+            loadProfile();
+        }
+      }
+
+      // Initial loads
+      initTest(); // Initialize typing test on page load
+      loadVideos(); // Load videos when the page loads
+      loadProfile(); // Load profile data when the page loads
+    });
+  </script>
+</body>
+</html>
